@@ -1,33 +1,34 @@
 import Speaker from "./Speaker";
-import ReactPlaceholder from "react-placeholder";
-import useRequestSpeakers from "../hooks/useRequestDelay";
+import ReactPlaceHolder from "react-placeholder";
+import useRequestDelay, { REQUEST_STATUS } from "../hooks/useRequestDelay";
+import { data } from "../../SpeakerData";
 
-
-function SpeakersList({showSessions}) {
+function SpeakersList({ showSessions }) {
     const {
-        speakersData,
-        isLoading,
-        hasErrored,
+        data: speakersData,
+        requestStatus,
         error,
-        onFavoriteToggle,
-    } = useRequestSpeakers(2000);
+        updateRecord,
+    } = useRequestDelay(2000, data);
 
-    if (hasErrored === true) {
+    if (requestStatus === REQUEST_STATUS.FAILURE) {
         return (
             <div className="text-danger">
                 ERROR: <b>loading Speaker Data Failed {error}</b>
             </div>
         );
     }
+
+    //if (isLoading === true) return <div>Loading...</div>
+
     return (
         <div className="container speakers-list">
-            <ReactPlaceholder
+            <ReactPlaceHolder
                 type="media"
                 rows={15}
                 className="speakers-list-placeholder"
-                ready={isLoading === false}
+                ready={requestStatus === REQUEST_STATUS.SUCCESS}
             >
-
                 <div className="row">
                     {speakersData.map(function (speaker) {
                         return (
@@ -36,13 +37,16 @@ function SpeakersList({showSessions}) {
                                 speaker={speaker}
                                 showSessions={showSessions}
                                 onFavoriteToggle={() => {
-                                    onFavoriteToggle(speaker.id);
+                                    updateRecord({
+                                        ...speaker,
+                                        favorite: !speaker.favorite,
+                                    });
                                 }}
                             />
                         );
                     })}
                 </div>
-            </ReactPlaceholder>
+            </ReactPlaceHolder>
         </div>
     );
 }

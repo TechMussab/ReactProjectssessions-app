@@ -1,18 +1,14 @@
-import { data } from "../../SpeakerData";
 import { useState, useEffect } from "react";
 
-export const REQUEST_STATUS=
-    {
-      LOADING:'Loading...',
-      SUCCESS:'success',
-      FAILURE:'failure',
-    }
+export const REQUEST_STATUS = {
+  LOADING: "loading",
+  SUCCESS: "success",
+  FAILURE: "failure",
+};
 
-
-function useRequestDelay(delayTime = 1000) {
-  const [speakersData, setSpeakersData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasErrored, setHasErrored] = useState(false);
+function useRequestDelay(delayTime = 1000, initialData = []) {
+  const [data, setData] = useState([]);
+  const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.LOADING);
   const [error, setError] = useState("");
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -22,38 +18,37 @@ function useRequestDelay(delayTime = 1000) {
       try {
         await delay(delayTime);
         //throw "Had Error."
-        setIsLoading(false);
-        setSpeakersData(data);
+        setRequestStatus(REQUEST_STATUS.SUCCESS);
+        setData(initialData);
       } catch (e) {
-        setIsLoading(false);
-        setHasErrored(true);
+        setRequestStatus(REQUEST_STATUS.FAILURE);
         setError(e);
       }
     }
     delayFunc();
   }, []);
 
-  function onFavoriteToggle(id) {
-    const speakersRecPrevious = speakersData.find(function (rec) {
-      return rec.id === id;
-    });
-    const speakerRecUpdated = {
-      ...speakersRecPrevious,
-      favorite: !speakersRecPrevious.favorite,
-    };
-    const speakersDataNew = speakersData.map(function (rec) {
-      return rec.id === id ? speakerRecUpdated : rec;
+  function updateRecord(recordUpdated) {
+    const newRecords = data.map(function (rec) {
+      return rec.id === recordUpdated.id ? recordUpdated : rec;
     });
 
-    setSpeakersData(speakersDataNew);
+    async function delayFunction() {
+      try {
+        await delay(delayTime);
+        setData(newRecords);
+      } catch (error) {
+        console.log("error thrown inside delayFunction", error);
+      }
+    }
+    delayFunction();
   }
 
   return {
-    speakersData,
-    isLoading,
-    hasErrored,
+    data,
+    requestStatus,
     error,
-    onFavoriteToggle,
+    updateRecord,
   };
 }
 
