@@ -1,5 +1,8 @@
-function SpeakersToolbar({ theme, setTheme, showSessions, setShowSessions }) {
-  
+import {ThemeContext} from "./Layout";
+import {useContext} from "react";
+function SpeakersToolbar({ showSessions, setShowSessions }) {
+  const { theme, setTheme } = useContext(ThemeContext);
+
   const styles={
     toolbarBackground:{
       light:"white",

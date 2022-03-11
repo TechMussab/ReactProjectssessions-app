@@ -1,4 +1,8 @@
-function Header({ theme }) {
+import { ThemeContext } from "./Layout";
+import { useContext } from "react";
+
+function Header() {
+  const { theme } = useContext(ThemeContext);
   const classNames={
     headerText:{
       light:'header-title',

@@ -1,5 +1,8 @@
-import React,{useState} from "react";
-function Session({ title, room }) {
+import React, {useState} from "react";
+import ReactPlaceholder from "react-placeholder";
+import {REQUEST_STATUS} from "../hooks/useRequestDelay";
+
+function Session({title, room}) {
     return (
         <span className="session w-100">
       {title} <strong>Room: {room.name}</strong>
@@ -7,7 +10,7 @@ function Session({ title, room }) {
     );
 }
 
-function Sessions({ sessions }) {
+function Sessions({sessions}) {
     return (
         <div className="sessionBox card h-250">
             <Session {...sessions[0]} />
@@ -15,7 +18,7 @@ function Sessions({ sessions }) {
     );
 }
 
-function SpeakerImage({ id, first, last }) {
+function SpeakerImage({id, first, last}) {
     return (
         <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300">
             <img
@@ -28,8 +31,9 @@ function SpeakerImage({ id, first, last }) {
     );
 }
 
-function SpeakerFavorite({ favorite, onFavoriteToggle }) {
-    const [inTransition,setInTransition]=useState(false)
+function SpeakerFavorite({favorite, onFavoriteToggle}) {
+    const [inTransition, setInTransition] = useState(false)
+
     function doneCallback() {
         setInTransition(false)
         console.log(
@@ -56,7 +60,7 @@ function SpeakerFavorite({ favorite, onFavoriteToggle }) {
               <span className="fa fa-circle-notch fa-spin"></span>
           ):''}
       </span>
-        </div>
+</div>
     );
 }
 
@@ -97,15 +101,15 @@ function SpeakerDemographics({
     );
 }
 
-function Speaker({ speaker, showSessions, onFavoriteToggle }) {
-    const { id, first, last, sessions } = speaker;
+function Speaker({speaker, showSessions, onFavoriteToggle}) {
+    const {id, first, last, sessions} = speaker;
     return (
         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
             <div className="card card-height p-4 mt-4">
-                <SpeakerImage id={id} first={first} last={last} />
-                <SpeakerDemographics {...speaker} onFavoriteToggle={onFavoriteToggle} />
+                <SpeakerImage id={id} first={first} last={last}/>
+                <SpeakerDemographics {...speaker} onFavoriteToggle={onFavoriteToggle}/>
             </div>
-            {showSessions === true ? <Sessions sessions={sessions} /> : null}
+            {showSessions === true ? <Sessions sessions={sessions}/> : null}
         </div>
     );
 }
