@@ -11,6 +11,7 @@ function useTheme(startingTheme='light')
     return{
         theme,
         setTheme:validateTheme,
+
     };
 }
 export default useTheme;
