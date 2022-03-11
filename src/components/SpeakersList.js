@@ -1,6 +1,6 @@
 import Speaker from "./Speaker";
 import ReactPlaceholder from "react-placeholder";
-import useRequestSpeakers from "../hooks/useRequestSpeakers";
+import useRequestSpeakers from "../hooks/useRequestDelay";
 
 
 function SpeakersList({showSessions}) {

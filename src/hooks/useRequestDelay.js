@@ -1,7 +1,15 @@
 import { data } from "../../SpeakerData";
 import { useState, useEffect } from "react";
 
-function useRequestSpeakers(delayTime = 1000) {
+export const REQUEST_STATUS=
+    {
+      LOADING:'Loading...',
+      SUCCESS:'success',
+      FAILURE:'failure',
+    }
+
+
+function useRequestDelay(delayTime = 1000) {
   const [speakersData, setSpeakersData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasErrored, setHasErrored] = useState(false);
@@ -49,4 +57,4 @@ function useRequestSpeakers(delayTime = 1000) {
   };
 }
 
-export default useRequestSpeakers;
+export default useRequestDelay;
