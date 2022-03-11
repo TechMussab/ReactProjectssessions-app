@@ -1,25 +1,25 @@
-import React, {createContext, useContext, useState} from "react";
-// import Header from "./Header";
-// import Speakers from "./Speakers";
+import React, { useContext } from "react";
+import { ThemeContext, ThemeProvider } from "../contexts/ThemeContext";
 
-export const ThemeContext=createContext();
-
-function Layout({startingTheme,children})
-{
-    console.log(children)
-    const [theme, setTheme] = useState(startingTheme);
+function Layout({ startingTheme, children }) {
     return (
-        <ThemeContext.Provider value={{setTheme, theme}}>
-            <div
-                className={
-                    theme === "light" ? "container-fluid light" : "container-fluid dark"
-                }
-            >
-                {
-                    children
-                }
-            </div>
-        </ThemeContext.Provider>
+        <ThemeProvider startingTheme={startingTheme}>
+            <LayoutNoThemeProvider>{children}</LayoutNoThemeProvider>
+        </ThemeProvider>
+    );
+}
+
+function LayoutNoThemeProvider({ children }) {
+    const { theme } = useContext(ThemeContext);
+
+    return (
+        <div
+            className={
+                theme === "light" ? "container-fluid light" : "container-fluid dark"
+            }
+        >
+            {children}
+        </div>
     );
 }
 
